@@ -1,9 +1,8 @@
-import { Component,signal } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { Button } from "primeng/button";
 
-
-interface Paziente{
+export interface Paziente {
   id: string;
   nome: string;
   cognome: string;
@@ -13,36 +12,32 @@ interface Paziente{
   note: string;
   patologia: string;
 }
+
 @Component({
   selector: 'his-card-pz',
   imports: [CardModule, Button],
   templateUrl: './card-pz.html',
   styleUrl: './card-pz.scss',
 })
-export class CardPz {
-  nome:string="Emmanuele"; //notazione vecchia
-  paziente = signal<Paziente>({
-    id: "1",
-    nome: "Gigi",
-    cognome: "Rossi",
-    braccialetto: "123456",
-    eta: 75,
-    codiceColore: "rosso",
-    note: "Nessuna nota",
-    patologia: "Diabete"
-  }); //notazione nuova
-
-  cambiaNome(): void{
-    this.nome = "Mario";
-    this.paziente.set({ 
-      id: "1",
-      nome: "Mario",
-      cognome: "Rossi",
-      braccialetto: "123456",
-      eta: 33,
-      codiceColore: "blu",
-      note: "Nessuna nota",
-      patologia: "Diabete"
-    });
+export class CardPZ {
+  paziente = input.required<Paziente>();
+  
+  setColoreDiStato() {
+    switch (this.paziente().codiceColore) {
+      case 'NERO':
+        return 'border-black';
+      case 'ROSSO':
+        return 'border-red-500';
+      case 'GIALLO':
+        return 'border-yellow-500';
+      case 'AZZURRO':
+        return 'border-blue-500';
+      case 'VERDE':
+        return 'border-green-500';
+      case 'BIANCO':
+        return 'border-white';
+      default:
+        return '';
+    }
   }
 }
