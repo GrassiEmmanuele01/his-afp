@@ -1,5 +1,5 @@
 <div class="mb-4 p-4">
-    <p-card class="w-2xs border-l-8 {{ setColoreDiStato() }}" header="{{ paziente().cognome }} {{ paziente().nome }}"
+    <p-card class="w-2xs {{ setColoreDiStato() }} {{ setBorderTop() }}" header="{{ paziente().cognome }} {{ paziente().nome }}"
         subheader="{{ paziente().braccialetto }} - {{ paziente().codiceColore }}">
         <p>
             <b>{{ paziente().patologia }}</b>

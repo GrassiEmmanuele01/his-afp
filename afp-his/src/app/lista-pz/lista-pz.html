@@ -1,12 +1,21 @@
 <!-- <his-card-pz /> -->
 <!-- @for (<var> of <array>){} -->
+<input 
+    type="text"
+    pInputText
+    [(ngModel)]="nomePaziente"
+>
+
+<p>Nome PZ: {{ nomePaziente() || "Nessun nome inserito" }}</p>
+<p>Pazienti in lista: {{ filteredList().length }}</p>
 <div
     class="flex flex-wrap flex-row gap-4 p-4"
 >
 
-@for (pz of listaPz(); track pz.braccialetto) {
-    <his-card-pz [paziente]="pz" />
+@for (pz of filteredList(); track pz.braccialetto) {
+    <his-card-pz [borderTop]="false" [paziente]="pz" />
+    <p-button label="Edit" (onClick)="editNomePaziente(pz.nome)"></p-button>
 }@empty {
     <p>Nessun paziente in lista.</p>
 }
-</div>
+</div>  

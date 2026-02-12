@@ -21,6 +21,11 @@ export interface Paziente {
 })
 export class CardPZ {
   paziente = input.required<Paziente>();
+  borderTop = input.required<boolean>();
+
+  setBorderTop() {
+    return this.borderTop() ? 'border-t-8' : 'border-b-8';
+  }
   
   setColoreDiStato() {
     switch (this.paziente().codiceColore) {
