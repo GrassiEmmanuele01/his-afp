@@ -1,8 +1,19 @@
-import { Component, signal ,model, computed} from '@angular/core';
+import { Component, signal ,model, computed, inject} from '@angular/core';
 import { CardPZ, Paziente } from '../card-pz/card-pz';
 import { InputTextModule } from 'primeng/inputtext';
 import {FormsModule} from "@angular/forms";
 import { Button } from "primeng/button";
+import { HttpClient } from '@angular/common/http';
+
+interface Response {
+  status: string;
+  data: HealthStatus;
+}
+interface HealthStatus {
+  service: string;
+  database: string;
+  uptime: number;
+  }
 
 @Component({
   selector: 'his-lista-pz',
@@ -15,33 +26,48 @@ export class ListaPz {
   listaPz = signal<Paziente[]>([
     {
       id: "1",
-    nome: "Gigi",
-    cognome: "Rossi",
-    braccialetto: "123",
-    eta: 75,
-    codiceColore: "ROSSO",
-    note: "Nessuna nota",
-    patologia: "Diabete"
+      nome: "Gigi",
+      cognome: "Rossi",
+      braccialetto: "123",
+      eta: 75,
+      codiceColore: "ROSSO",
+      note: "Nessuna nota",
+      patologia: "Diabete"
     },
     {
       id: "2",
-    nome: "Valerio",
-    cognome: "Gravili",
-    braccialetto: "456",
-    eta: 23,
-    codiceColore: "GIALLO",
-    note: "Sono sopravvissuto a un Buster Call",
-    patologia: "Trauma cranico"
+      nome: "Valerio",
+      cognome: "Gravili",
+      braccialetto: "456",
+      eta: 23,
+      codiceColore: "GIALLO",
+      note: "Sono sopravvissuto a un Buster Call",
+      patologia: "Trauma cranico"
     }
   ]);
 
+  healthStatus = signal<HealthStatus | null>(null);
 
   filteredList = computed(() => { 
     return this.listaPz().filter((pz: Paziente) =>
       pz.nome.toLowerCase().includes(this.nomePaziente().toLowerCase()));
   })
-  
+
+  constructor() { 
+    this.getHealthStatus();
+  }
+
   editNomePaziente(nomePz:string) { 
     this.nomePaziente.set(nomePz);
+  }
+
+  readonly #http = inject(HttpClient);
+  getHealthStatus() { 
+    this.#http.get<Response>("http://localhost:3000/health").subscribe(
+      (res) => {  
+        this.healthStatus.set(res.data);
+        console.table('DB status:', res.data.database) 
+      }
+    );
   }
 }

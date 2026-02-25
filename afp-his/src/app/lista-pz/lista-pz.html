@@ -8,6 +8,19 @@
 
 <p>Nome PZ: {{ nomePaziente() || "Nessun nome inserito" }}</p>
 <p>Pazienti in lista: {{ filteredList().length }}</p>
+
+<hr>
+
+    <ul>
+        <li>Service: {{ healthStatus()?.service || 'KO'}}</li>
+        <li>Database: {{ healthStatus()?.database || 'KO'}}</li>
+        <li>Uptime: {{ healthStatus()?.uptime || '-1'}}</li>
+    </ul>
+
+    
+
+
+
 <div
     class="flex flex-wrap flex-row gap-4 p-4"
 >
