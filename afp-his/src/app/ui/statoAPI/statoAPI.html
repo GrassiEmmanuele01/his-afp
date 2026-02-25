@@ -1,0 +1,19 @@
+<p>{{ healthStatus().database }}</p>
+@let srv = healthStatus().service;
+@let db = healthStatus().database;
+@let uptime = healthStatus().uptime;
+
+<ul>
+    <li>Service:
+        <p-tag [severity]="srv == 'UP' ? 'success' : 'danger'" 
+                value="{{ srv }}" />
+    </li>
+    <li>Database:
+        <p-tag [severity]="db === 'CONNECTED' ? 'success' : 'danger'" 
+                value="{{ db}}" />
+    </li>
+    <li>Uptime:
+        <p-tag [severity]="uptime>0 ? 'success' : 'danger'" 
+                value="{{ uptime}}" />
+    </li>
+</ul>

@@ -4,20 +4,16 @@ import { InputTextModule } from 'primeng/inputtext';
 import {FormsModule} from "@angular/forms";
 import { Button } from "primeng/button";
 import { HttpClient } from '@angular/common/http';
+import { HealthStatus } from '../core/SystemStatus/HealthStatus.model';
+import { StatoAPI } from '../ui/statoAPI/statoAPI';
 
 interface Response {
   status: string;
   data: HealthStatus;
 }
-interface HealthStatus {
-  service: string;
-  database: string;
-  uptime: number;
-  }
-
 @Component({
   selector: 'his-lista-pz',
-  imports: [CardPZ, InputTextModule, FormsModule, Button],
+  imports: [CardPZ, InputTextModule, FormsModule, Button,StatoAPI],
   templateUrl: './lista-pz.html',
   styleUrl: './lista-pz.scss',
 })
@@ -46,16 +42,13 @@ export class ListaPz {
     }
   ]);
 
-  healthStatus = signal<HealthStatus | null>(null);
 
   filteredList = computed(() => { 
     return this.listaPz().filter((pz: Paziente) =>
       pz.nome.toLowerCase().includes(this.nomePaziente().toLowerCase()));
   })
 
-  constructor() { 
-    this.getHealthStatus();
-  }
+
 
   editNomePaziente(nomePz:string) { 
     this.nomePaziente.set(nomePz);
@@ -65,8 +58,8 @@ export class ListaPz {
   getHealthStatus() { 
     this.#http.get<Response>("http://localhost:3000/health").subscribe(
       (res) => {  
-        this.healthStatus.set(res.data);
-        console.table('DB status:', res.data.database) 
+    //    this.healthStatus.set(res.data);
+      //  console.table('DB status:', res.data.database) 
       }
     );
   }

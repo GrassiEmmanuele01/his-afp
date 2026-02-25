@@ -1,34 +1,21 @@
 <!-- <his-card-pz /> -->
 <!-- @for (<var> of <array>){} -->
-<input 
-    type="text"
-    pInputText
-    [(ngModel)]="nomePaziente"
->
-
-<p>Nome PZ: {{ nomePaziente() || "Nessun nome inserito" }}</p>
-<p>Pazienti in lista: {{ filteredList().length }}</p>
-
+<input [(ngModel)]="nomePaziente" pInputText type="text">
+<p>Nome PZ: {{ nomePaziente() || 'none' }}</p>
+<p>Pazienti presenti in PS: {{ filteredList().length }}</p>
 <hr>
 
-    <ul>
-        <li>Service: {{ healthStatus()?.service || 'KO'}}</li>
-        <li>Database: {{ healthStatus()?.database || 'KO'}}</li>
-        <li>Uptime: {{ healthStatus()?.uptime || '-1'}}</li>
-    </ul>
+<his-stato-api />
 
-    
-
-
-
-<div
-    class="flex flex-wrap flex-row gap-4 p-4"
->
-
-@for (pz of filteredList(); track pz.braccialetto) {
-    <his-card-pz [borderTop]="false" [paziente]="pz" />
-    <p-button label="Edit" (onClick)="editNomePaziente(pz.nome)"></p-button>
-}@empty {
-    <p>Nessun paziente in lista.</p>
-}
-</div>  
+<!--
+-   quadrata: Padre -> Figlio
+-   rotonda: Figlio -> Padre
+-->
+<div class="flex flex-wrap flex-row gap-4 p-4">
+    @for (paziente of filteredList(); track paziente.braccialetto) {
+    <his-card-pz [borderTop]="false" [paziente]="paziente" />
+    <p-button (onClick)="editNomePaziente(paziente.nome)" label="edit"></p-button>
+    } @empty {
+    <h1>Nessun paziente in attesa</h1>
+    }
+</div>
