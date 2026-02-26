@@ -1,11 +1,13 @@
 import { Component, signal ,model, computed, inject} from '@angular/core';
-import { CardPZ, Paziente } from '../card-pz/card-pz';
+import { CardPZ } from '../card-pz/card-pz';
+import { Paziente } from '../core/patient-manager/patient.model';
 import { InputTextModule } from 'primeng/inputtext';
 import {FormsModule} from "@angular/forms";
 import { Button } from "primeng/button";
 import { HttpClient } from '@angular/common/http';
 import { HealthStatus } from '../core/SystemStatus/HealthStatus.model';
 import { StatoAPI } from '../ui/statoAPI/statoAPI';
+import { PatientManager } from '../core/patient-manager/patient-manager';
 
 interface Response {
   status: string;
@@ -18,29 +20,9 @@ interface Response {
   styleUrl: './lista-pz.scss',
 })
 export class ListaPz {
+  readonly PatientManager = inject(PatientManager);
   nomePaziente = model<string>('');
-  listaPz = signal<Paziente[]>([
-    {
-      id: "1",
-      nome: "Gigi",
-      cognome: "Rossi",
-      braccialetto: "123",
-      eta: 75,
-      codiceColore: "ROSSO",
-      note: "Nessuna nota",
-      patologia: "Diabete"
-    },
-    {
-      id: "2",
-      nome: "Valerio",
-      cognome: "Gravili",
-      braccialetto: "456",
-      eta: 23,
-      codiceColore: "GIALLO",
-      note: "Sono sopravvissuto a un Buster Call",
-      patologia: "Trauma cranico"
-    }
-  ]);
+  listaPz = this.PatientManager.listaPZ;
 
 
   filteredList = computed(() => { 

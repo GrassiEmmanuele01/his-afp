@@ -1,14 +1,15 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { SystemStatus } from '../../core/SystemStatus/system-status';
 import { Tag} from 'primeng/tag';
+import { Button } from 'primeng/button';
 
 @Component({
   selector: 'his-stato-api',
-  imports: [Tag],
+  imports: [Tag, Button],
   templateUrl: './statoAPI.html',
   styleUrl: './statoAPI.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StatoAPI {
-    healthStatus = inject(SystemStatus).statoAPI;
- }
+  readonly SystemStatus = inject(SystemStatus);
+}

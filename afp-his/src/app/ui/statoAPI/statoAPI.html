@@ -1,7 +1,6 @@
-<p>{{ healthStatus().database }}</p>
-@let srv = healthStatus().service;
-@let db = healthStatus().database;
-@let uptime = healthStatus().uptime;
+@let srv = SystemStatus.statoAPI().service;
+@let db = SystemStatus.statoAPI().database;
+@let uptime = SystemStatus.statoAPI().uptime;
 
 <ul>
     <li>Service:
@@ -15,5 +14,8 @@
     <li>Uptime:
         <p-tag [severity]="uptime>0 ? 'success' : 'danger'" 
                 value="{{ uptime}}" />
+    </li>
+    <li>
+        <p-button pButton label="Refresh" (onClick)="SystemStatus.fetchStatoAPI()"></p-button>
     </li>
 </ul>
