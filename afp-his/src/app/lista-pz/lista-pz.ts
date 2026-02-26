@@ -1,4 +1,4 @@
-import { Component, signal ,model, computed, inject} from '@angular/core';
+import { Component, signal ,model, computed, inject, effect} from '@angular/core';
 import { CardPZ } from '../card-pz/card-pz';
 import { Paziente } from '../core/patient-manager/patient.model';
 import { InputTextModule } from 'primeng/inputtext';
@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { HealthStatus } from '../core/SystemStatus/HealthStatus.model';
 import { StatoAPI } from '../ui/statoAPI/statoAPI';
 import { PatientManager } from '../core/patient-manager/patient-manager';
+
 
 interface Response {
   status: string;
@@ -24,16 +25,9 @@ export class ListaPz {
   nomePaziente = model<string>('');
   listaPz = this.PatientManager.listaPZ;
 
-
-  filteredList = computed(() => { 
-    return this.listaPz().filter((pz: Paziente) =>
-      pz.nome.toLowerCase().includes(this.nomePaziente().toLowerCase()));
-  })
-
-
-
   editNomePaziente(nomePz:string) { 
     this.nomePaziente.set(nomePz);
+    this.PatientManager.filterByName(nomePz);
   }
 
   readonly #http = inject(HttpClient);
@@ -44,5 +38,12 @@ export class ListaPz {
       //  console.table('DB status:', res.data.database) 
       }
     );
+  }
+
+  constructor() { 
+    effect(() => { 
+      this.PatientManager.filterByName(this.nomePaziente());
+    });
+
   }
 }

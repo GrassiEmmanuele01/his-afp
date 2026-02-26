@@ -1,8 +1,9 @@
 <!-- <his-card-pz /> -->
 <!-- @for (<var> of <array>){} -->
-<input [(ngModel)]="nomePaziente" pInputText type="text">
+<input [(ngModel)]="nomePaziente" pInputText type="text"
+        placeholder="Cerca paziente..." />
 <p>Nome PZ: {{ nomePaziente() || 'none' }}</p>
-<p>Pazienti presenti in PS: {{ filteredList().length }}</p>
+<p>Pazienti presenti in PS: {{ listaPz().length }}</p>
 <hr>
 
 <his-stato-api />
@@ -12,7 +13,7 @@
 -   rotonda: Figlio -> Padre
 -->
 <div class="flex flex-wrap flex-row gap-4 p-4">
-    @for (paziente of filteredList(); track paziente.braccialetto) {
+    @for (paziente of listaPz(); track paziente.braccialetto) {
     <his-card-pz [borderTop]="false" [paziente]="paziente" />
     <p-button (onClick)="editNomePaziente(paziente.nome)" label="edit"></p-button>
     } @empty {
