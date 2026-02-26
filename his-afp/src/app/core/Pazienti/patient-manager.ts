@@ -9,7 +9,8 @@ import { APIResponse } from '../models/APIResponse.model';
 export class PatientManager {
   #http = inject(HttpClient);
   #listaPZ = signal<Paziente[]>([]);
-  listaPZ = this.#listaPZ.asReadonly();
+  #listaPZFiltered = signal<Paziente[]>(this.#listaPZ());
+  listaPZ = this.#listaPZFiltered.asReadonly();
 
   constructor() {
     this.fetchPazienti();
@@ -51,5 +52,13 @@ export class PatientManager {
     }
 
     return age;
+  }
+
+  public filterByName(name: string) {
+    const filtered = this.#listaPZ().filter((p) => {
+      const fullName = `${p.nome} ${p.cognome}`.toLowerCase();
+      return fullName.includes(name.toLowerCase());
+    });
+    this.#listaPZFiltered.set(filtered);
   }
 }

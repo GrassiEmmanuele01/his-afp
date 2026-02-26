@@ -4,7 +4,7 @@
   type="text"
 >
 <p>Nome PZ: {{ nomePaziente() || 'none' }}</p>
-<p>Pazienti presenti in PS: {{ filteredList().length }}</p>
+<p>Pazienti presenti in PS: {{ listaPz().length }}</p>
 <hr>
 
 <his-stato-api/>
@@ -16,7 +16,7 @@
 <div
   class="flex flex-wrap flex-row gap-4 p-4"
 >
-  @for (paziente of filteredList(); track paziente.braccialetto) {
+  @for (paziente of listaPz(); track paziente.braccialetto) {
     <his-card-pz [borderTop]="false" [paziente]="paziente"/>
     <p-button
       (onClick)="editNomePaziente(paziente.nome)"
