@@ -14,6 +14,10 @@ export const routes: Routes = [
     component: AccettazionePz,
   },
   {
+    path: 'modifica-pz',
+    component: ModificaPz,
+  },
+  {
     path: 'modifica-pz:id',
     component: ModificaPz,
   },

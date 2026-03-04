@@ -1,0 +1,18 @@
+<input 
+    [(ngModel)]="nomePaziente" 
+    pInputText type="text"
+>
+
+@let pzManager = PatientManager;
+<p>Pazienti presenti in PS: {{ pzManager.listaPZ().length }}</p>
+
+<div 
+    class="flex flex-wrap flex-row gap-4 p-4"
+>
+    @for (paziente of PatientManager.listaPZ(); track paziente.braccialetto) {
+    <his-card-pz [borderTop]="false" [paziente]="paziente" />
+
+    } @empty {
+    <h1>Nessun paziente in attesa</h1>
+    }
+</div>
