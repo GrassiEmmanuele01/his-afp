@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
-import { DarkmodeSelector } from './darkmode-selector/darkmode-selector.component';
-import { ListaPz } from './lista-pz/lista-pz';
+import { DarkmodeSelector } from './ui/darkmode-selector/darkmode-selector.component';
+import { ListaPz } from './pattern/lista-pz/lista-pz';
 
 @Component({
   selector: 'app-root',
