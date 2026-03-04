@@ -13,7 +13,13 @@ export const routes: Routes = [
     path: 'accettazione-pz',
     component: AccettazionePz,
   },
+  //
   {
+    path: 'modifica-pz',
+    component: ModificaPz,
+  },
+  {
+    // /modifica-pz?id=2
     path: 'modifica-pz:id',
     component: ModificaPz,
   },
