@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'his-modifica-pz',
@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './modifica-pz.scss',
 })
 export class ModificaPz {
-
+  patientId = input<string>();
 }

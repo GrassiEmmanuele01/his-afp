@@ -1,0 +1,43 @@
+<header
+    class="flex flex-row items-center shadow-md backdrop-opacity-5"
+>    
+    <!-- LOGO --> 
+    <div
+        class="flex items-center justify-center p-1"
+    >
+        <img  class="w-40" src="logo-asuit.svg" alt="logoASUIT">
+    </div>
+    <!-- AZIENDA: Località+reparto -->
+    <div
+        class="pl-1"
+    >
+        <h1 class="text-4xl font-bold text-primary">Pronto Soccorso</h1>
+        <p class="text-md text-gray-800 .dark:text-gray-200">Presidio Ospedaliero di Arco</p>
+    </div>
+    <!-- DIVIDER -->
+    <p-divider layout="vertical" />
+    <div class="border-1 h-10 mx-1"></div>
+    <!-- AZIONI -->
+    <nav class="flex flex-row items-center gap-3 pl-4">
+        <p-button 
+        label="Lista PZ" 
+        [variant]="'outlined'"
+        routerLink="/lista-pz" 
+        />
+        <p-button 
+        label="Accettazione PZ" 
+        [variant]="'outlined'"
+        routerLink="/accettazione-pz" 
+        />
+        <p-button 
+        label="Stato servizi" 
+        [variant]="'outlined'"
+        routerLink="/stato-servizi" 
+        />
+    </nav>
+    <div
+        class="ml-auto mr-4"
+    >
+        <his-darckmode-selector/>
+    </div>
+</header>

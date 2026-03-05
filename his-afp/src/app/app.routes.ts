@@ -7,18 +7,24 @@ import { StatoServizi } from './features/stato-servizi/stato-servizi';
 export const routes: Routes = [
   {
     path: 'lista-pz',
-    component: ListaPz,
+    // component: ListaPz,
+    loadComponent: () =>
+      import('./features/lista-pz/lista-pz').then((l)=>l.ListaPz)
   },
   {
     path: 'accettazione-pz',
-    component: AccettazionePz,
+    // component: AccettazionePz,
+    loadComponent: () =>
+      import('./features/accettazione-pz/accettazione-pz').then((a)=>a.AccettazionePz)
   },
   {
     path: 'modifica-pz',
-    component: ModificaPz,
+    //component: ModificaPz,
+    loadComponent: () =>
+      import('./features/modifica-pz/modifica-pz').then((m)=>m.ModificaPz)
   },
   {
-    path: 'modifica-pz:id',
+    path: 'modifica-pz:patientId',
     component: ModificaPz,
   },
   {
