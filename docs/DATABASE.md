@@ -3,14 +3,16 @@
 - **Database Engine:** PostgreSQL 16+
 - **Schema:** `sio`
 - **Encoding:** UTF-8
+
 ---
 
 ## 1. Entity-Relationship Diagram (ERD)
+
 Di seguito la rappresentazione visiva delle relazioni tra le tabelle.
 
 ```mermaid
 erDiagram
-    %% ENITITIES
+%% ENITITIES
     USERS {
         int id PK
         string username UK
@@ -24,6 +26,7 @@ erDiagram
         string nome
         string cognome
         date data_nascita
+        enum sesso "M, F"
         string indirizzo_via
         string indirizzo_civico
         string comune
@@ -60,18 +63,21 @@ erDiagram
         string description
     }
 
-    %% RELATIONSHIPS
-    PATIENTS ||--o{ ADMISSIONS : "ha"
-    TRIAGE_COLORS ||--o{ ADMISSIONS : "assegnato a"
-    PATHOLOGIES ||--o{ ADMISSIONS : "riferita in"
-    ARRIVAL_MODES ||--o{ ADMISSIONS : "arrivato con"
+%% RELATIONSHIPS
+    PATIENTS ||--o{ ADMISSIONS: "ha"
+    TRIAGE_COLORS ||--o{ ADMISSIONS: "assegnato a"
+    PATHOLOGIES ||--o{ ADMISSIONS: "riferita in"
+    ARRIVAL_MODES ||--o{ ADMISSIONS: "arrivato con"
 ```
+
 ---
 
 ## 2. Tipi Enumerati (ENUMs)
+
 Questi tipi personalizzati sono definiti a livello di database per garantire l'integrità dei dati.
 
 ### `user_role`
+
 Definisce i permessi degli operatori sanitari.
 
 | Valore  | Descrizione                              |
@@ -91,10 +97,13 @@ Definisce il flusso del paziente all'interno del Pronto Soccorso.
 | `'OBI'` | Osservazione | Osservazione Breve Intensiva.                             |
 | `'RIC'` | Ricovero     | Paziente trasferito in reparto (Esce dalla lista attiva). |
 | `'DIM'` | Dimissione   | Paziente mandato a casa (Esce dalla lista attiva).        |
+
 ---
 
 ## 3. Tabelle Operative
+
 ### `admissions` (Accessi)
+
 Questa è la tabella centrale del sistema. Collega il paziente clinico con l'evento amministrativo dell'accesso in PS.
 
 | Colonna                | Tipo        | Vincoli                   | Descrizione                                |
@@ -110,7 +119,9 @@ Questa è la tabella centrale del sistema. Collega il paziente clinico con l'eve
 | `note_triage`          | TEXT        | NULLABLE                  | Note libere inserite dall'infermiere.      |
 
 ### `patients` (Anagrafica Pazienti)
-Contiene i dati anagrafici puri. Se un paziente torna, non viene creato un nuovo record qui, ma solo un nuovo record in `admissions`.
+
+Contiene i dati anagrafici puri. Se un paziente torna, non viene creato un nuovo record qui, ma solo un nuovo record in
+`admissions`.
 
 | Colonna          | Tipo         | Vincoli    | Descrizione                                  |
 |------------------|--------------|------------|----------------------------------------------|
@@ -124,7 +135,9 @@ Contiene i dati anagrafici puri. Se un paziente torna, non viene creato un nuovo
 ---
 
 ## 4. Tabelle di Configurazione (Lookup)
-Queste tabelle ("Dizionari") servono a popolare le select nel frontend e mantenere integrità referenziale. I codici (`code`) sono stringhe parlanti (es. 'ROSSO') invece di ID numerici per facilitare il debug.
+
+Queste tabelle ("Dizionari") servono a popolare le select nel frontend e mantenere integrità referenziale. I codici (
+`code`) sono stringhe parlanti (es. 'ROSSO') invece di ID numerici per facilitare il debug.
 
 ### `triage_colors`
 
@@ -154,6 +167,7 @@ Queste tabelle ("Dizionari") servono a popolare le select nel frontend e mantene
 ## 5. Sicurezza e Utenti
 
 ### `users`
+
 Tabella per l'accesso del personale ospedaliero.
 
 | Colonna    | Tipo         | Descrizione                                 |
@@ -167,5 +181,8 @@ Tabella per l'accesso del personale ospedaliero.
 
 ## Note di Progettazione
 
-1. **Unique Constraint (Upsert):** La tabella `patients` ha un vincolo UNIQUE sul `codice_fiscale`. L'API gestisce l'inserimento con logica `ON CONFLICT DO UPDATE`, permettendo di aggiornare i dati di un paziente esistente durante un nuovo triage senza creare duplicati.
-2. **Date vs Timestamp:** Per la data di nascita usiamo `DATE` (senza orario), per ingresso/uscita usiamo `TIMESTAMP` (con orario) in UTC.
+1. **Unique Constraint (Upsert):** La tabella `patients` ha un vincolo UNIQUE sul `codice_fiscale`. L'API gestisce l'
+   inserimento con logica `ON CONFLICT DO UPDATE`, permettendo di aggiornare i dati di un paziente esistente durante un
+   nuovo triage senza creare duplicati.
+2. **Date vs Timestamp:** Per la data di nascita usiamo `DATE` (senza orario), per ingresso/uscita usiamo `TIMESTAMP` (
+   con orario) in UTC.

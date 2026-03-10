@@ -252,6 +252,7 @@ I dati sono appiattiti (flattened) per facilitare la visualizzazione in tabella.
       "cognome": "Rossi",
       "dataNascita": "1980-05-20",
       "codiceFiscale": "RSSMRA80E20H501U",
+      "sex": "M",
       "patologiaCode": "C02",
       "patologiaDescrizione": "Cardiocircolatoria",
       "coloreCode": "ROSSO",
@@ -287,6 +288,7 @@ Se il paziente esiste già (check su Codice Fiscale), aggiorna i dati anagrafici
   "cognome": "Verdi",
   "dataNascita": "1990-01-01",
   "codiceFiscale": "VRDLGU90A01H501K",
+  "sex": "M",
   "patologiaCode": "C01",
   // Deve esistere in /resources/pathologies
   "codiceColore": "AZZURRO",

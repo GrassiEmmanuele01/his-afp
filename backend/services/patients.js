@@ -19,6 +19,7 @@ export const retrieveActiveAdmissionsFn = catchAsync(async (req, res) => {
                p.cognome,
                p.data_nascita      AS "dataNascita",
                p.codice_fiscale    AS "codiceFiscale",
+               p.sex,
 
                -- Dati Patologia
                path.code           AS "patologiaCode",
@@ -66,6 +67,7 @@ export const retrieveAdmissionByIDFn = catchAsync(async (req, res, next) => {
                p.cognome,
                p.data_nascita      AS "dataNascita",
                p.codice_fiscale    AS "codiceFiscale",
+               p.sex,
                p.indirizzo_via     as "indirizzoVia",
                p.indirizzo_civico  AS "indirizzoCivico",
                p.comune,
@@ -102,7 +104,7 @@ export const retrieveAdmissionByIDFn = catchAsync(async (req, res, next) => {
  */
 export const insertNewAdmissionFn = catchAsync(async (req, res) => {
 	const {
-		nome, cognome, dataNascita, codiceFiscale, // Dati Paziente
+		nome, cognome, dataNascita, sex, codiceFiscale, // Dati Paziente
 		patologiaCode, codiceColore, modalitaArrivoCode, noteTriage // Dati Accesso (Notare i suffix 'Code')
 	} = req.body;
 
@@ -112,12 +114,12 @@ export const insertNewAdmissionFn = catchAsync(async (req, res) => {
 
 	// 1. Upsert Paziente
 	let patientRes = await client.query(
-		`INSERT INTO patients (nome, cognome, data_nascita, codice_fiscale)
-         VALUES ($1, $2, $3, $4)
+		`INSERT INTO patients (nome, cognome, data_nascita, sex, codice_fiscale)
+         VALUES ($1, $2, $3, $4, $5)
          ON CONFLICT (codice_fiscale) DO UPDATE SET nome    = EXCLUDED.nome,
                                                     cognome = EXCLUDED.cognome
          RETURNING id`,
-		[nome, cognome, dataNascita, codiceFiscale]
+		[nome, cognome, dataNascita, sex, codiceFiscale]
 	);
 	const patientId = patientRes.rows[0].id;
 
