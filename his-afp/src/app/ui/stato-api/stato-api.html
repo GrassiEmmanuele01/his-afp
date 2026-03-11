@@ -2,7 +2,9 @@
 @let db = systemStatus.statoAPI().database;
 @let uptime = systemStatus.statoAPI().uptime;
 
-<ul>
+<ul
+  class="align-items-center justify-content-center flex flex-col gap-3"
+>
   <li>Service:
     <p-tag
       [severity]="srv === 'UP' ? 'success' : 'danger'"

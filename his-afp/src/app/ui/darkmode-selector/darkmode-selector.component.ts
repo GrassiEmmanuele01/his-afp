@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 
+
 @Component({
-  selector: 'his-darckmode-selector',
+  selector: 'his-darkmode-selector',
   imports: [ButtonModule],
   templateUrl: './darkmode-selector.component.html',
   styleUrl: './darkmode-selector.component.scss',
