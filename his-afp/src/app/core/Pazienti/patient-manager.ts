@@ -7,13 +7,28 @@ import { APIResponse } from '../models/APIResponse.model';
   providedIn: 'root',
 })
 export class PatientManager {
+  timer_id = signal<number>(-1);
   #http = inject(HttpClient);
   #listaPZ = signal<Paziente[]>([]);
   #listaPZFiltered = signal<Paziente[]>(this.#listaPZ());
   listaPZ = this.#listaPZFiltered.asReadonly();
 
-  constructor() {
-    this.fetchPazienti();
+  // constructor() {
+  //   this.fetchPazienti();
+  // }
+
+  /**
+   * Creazione timer di t secondi
+   */
+  public refreshPazienti() {
+    if (this.timer_id() >= 0) return;
+    let id = setInterval(() => this.fetchPazienti(), 1000);
+    this.timer_id.set(id);
+  }
+
+  public stopRefreshPazienti() {
+    clearInterval(this.timer_id());
+    this.timer_id.set(-1);
   }
 
   public fetchPazienti() {

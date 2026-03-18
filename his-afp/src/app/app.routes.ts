@@ -16,13 +16,13 @@ export const routes: Routes = [
   },
   {
     path: 'modifica-pz',
-    //component: ModificaPz,
-    loadComponent: () =>
-      import('./features/modifica-pz/modifica-pz').then((m)=>m.ModificaPz)
+    // component: ModificaPz,
+    loadComponent: () => import('./features/modifica-pz/modifica-pz').then((m) => m.ModificaPz),
   },
   {
-    path: 'modifica-pz/:patientId',
-    component: ModificaPz,
+    // /modifica-pz?id=2
+    path: 'modifica-pz:patientId',
+    loadComponent: () => import('./features/modifica-pz/modifica-pz').then((m) => m.ModificaPz),
   },
   {
     path: 'stato-servizi',
@@ -36,7 +36,7 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'lista-pz',
+    redirectTo: 'stato-servizi',
     pathMatch: 'full',
   },
 ];

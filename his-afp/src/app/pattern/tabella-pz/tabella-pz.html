@@ -1,6 +1,25 @@
-<input 
-    [(ngModel)]="nomePaziente" 
-    pInputText type="text"
+<p-button
+  (onClick)="PatientManager.fetchPazienti()"
+  [rounded]="true"
+  [text]="true"
+  icon="pi pi-refresh"
+  severity="secondary"
+/>
+<p-button
+  (onClick)="PatientManager.stopRefreshPazienti()"
+  [rounded]="true"
+  [text]="true"
+  icon="pi pi-stop"
+  severity="warn"
+/>
+<p-toggle-switch
+  [(ngModel)]="enableRefreshPz"
+/>
+<p>{{ enableRefreshPz() }}</p>
+<input
+  [(ngModel)]="nomePaziente"
+  pInputText
+  type="text"
 >
 
 @let pzManager = PatientManager;

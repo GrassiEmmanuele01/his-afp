@@ -16,7 +16,7 @@ export class CardPz {
   readonly #router = inject(Router);
   
   public navigateToSchedaPaziente() {
-    this.#router.navigate([`/modifica-pz/${+this.paziente().id+1}`]);
+    this.#router.navigate([`/modifica-pz/${this.paziente().id}`]);
   }
 
   setBorder() {
