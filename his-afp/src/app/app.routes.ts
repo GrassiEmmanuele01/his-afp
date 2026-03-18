@@ -21,7 +21,7 @@ export const routes: Routes = [
       import('./features/modifica-pz/modifica-pz').then((m)=>m.ModificaPz)
   },
   {
-    path: 'modifica-pz:patientId',
+    path: 'modifica-pz/:patientId',
     component: ModificaPz,
   },
   {

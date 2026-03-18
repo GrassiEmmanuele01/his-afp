@@ -1,2 +1,10 @@
 <p>modifica-pz works!</p>
 <p>Patient ID: {{patientId()||'NONE'}}</p>
+
+@if (patient.hasValue()){
+    <p>Patient Name: {{patient.value()?.nome}}</p>
+}@else if (patient.error()){
+    <p>Error loading patient: {{patient.error()}}</p>
+}@else if (patient.isLoading()) {
+    <p>Loading patient data...</p>
+}
