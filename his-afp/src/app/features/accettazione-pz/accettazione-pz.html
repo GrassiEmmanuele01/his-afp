@@ -1,67 +1,71 @@
 <form (submit)="onSubmit()" [formGroup]="paziente">
-  <div class="flex flex-col p-4">
-    <label for="nome">Nome:</label>
-    <input
-      [invalid]="checkFormControl('nome')"
-      class="w-2xs"
-      formControlName="nome"
-      id="nome"
-      pInputText
-      type="text"
-    />
-    @if (checkFormControl('nome')) {
-      @if (checkFormControlError('nome', 'required')) {
-        <p class="text-red-500">Il campo 'nome' è obbligatorio.</p>
+  <fieldset formGroupName="anagrafica">
+    <legend>Dati anagrafici</legend>
+    <div class="flex flex-col p-4">
+      <label for="nome">Nome:</label>
+      <input
+        [invalid]="checkFormControl('anagrafica.nome')"
+        class="w-2xs"
+        formControlName="nome"
+        id="nome"
+        pInputText
+        type="text"
+      />
+      @if (checkFormControl('anagrafica.nome')) {
+        @if (checkFormControlError('anagrafica.nome', 'required')) {
+          <p class="text-red-500">Il campo 'nome' è obbligatorio.</p>
+        }
+        @if (checkFormControlError('anagrafica.nome', 'minlength')) {
+          <p class="text-red-500">
+            Il campo 'nome' deve contenere almeno
+            {{ checkFormControlError('anagrafica.nome', 'minlength').requiredLength }} caratteri.
+          </p>
+        }
+        @if (checkFormControlError('anagrafica.nome', 'maxlength')) {
+          <p class="text-red-500">
+            Il campo 'nome' non può superare i
+            {{ checkFormControlError('anagrafica.nome', 'maxlength').requiredLength }} caratteri.
+          </p>
+        }
       }
-      @if (checkFormControlError('nome', 'minlength')) {
-        <p class="text-red-500">
-          Il campo 'nome' deve contenere almeno
-          {{ checkFormControlError('nome', 'minlength').requiredLength }} caratteri.
-        </p>
-      }
-      @if (checkFormControlError('nome', 'maxlength')) {
-        <p class="text-red-500">
-          Il campo 'nome' non può superare i
-          {{ checkFormControlError('nome', 'maxlength').requiredLength }} caratteri.
-        </p>
-      }
-    }
-  </div>
+    </div>
 
-  <div class="flex flex-col p-4">
-    <label for="cognome">Cognome:</label>
-    <input
-      [invalid]="checkFormControl('cognome')"
-      class="w-2xs"
-      formControlName="cognome"
-      id="cognome"
-      pInputText
-      type="text"
-    />
-    @if (checkFormControl('cognome')) {
-      @if (checkFormControlError('cognome', 'required')) {
-        <p class="text-red-500">Il campo 'nome' è obbligatorio.</p>
+    <div class="flex flex-col p-4">
+      <label for="cognome">Cognome:</label>
+      <input
+        [invalid]="checkFormControl('cognome')"
+        class="w-2xs"
+        formControlName="cognome"
+        id="cognome"
+        pInputText
+        type="text"
+      />
+      @if (checkFormControl('cognome')) {
+        @if (checkFormControlError('cognome', 'required')) {
+          <p class="text-red-500">Il campo 'nome' è obbligatorio.</p>
+        }
+        @if (checkFormControlError('cognome', 'minlength')) {
+          <p class="text-red-500">
+            Il campo 'cognome' deve contenere almeno
+            {{ checkFormControlError('cognome', 'minlength').requiredLength }} caratteri.
+          </p>
+        }
+        @if (checkFormControlError('cognome', 'maxlength')) {
+          <p class="text-red-500">
+            Il campo 'cognome' non può superare i
+            {{ checkFormControlError('cognome', 'maxlength').requiredLength }} caratteri.
+          </p>
+        }
       }
-      @if (checkFormControlError('cognome', 'minlength')) {
-        <p class="text-red-500">
-          Il campo 'cognome' deve contenere almeno
-          {{ checkFormControlError('cognome', 'minlength').requiredLength }} caratteri.
-        </p>
-      }
-      @if (checkFormControlError('cognome', 'maxlength')) {
-        <p class="text-red-500">
-          Il campo 'cognome' non può superare i
-          {{ checkFormControlError('cognome', 'maxlength').requiredLength }} caratteri.
-        </p>
-      }
-    }
-  </div>
+    </div>
+  </fieldset>
+
   <p-button
     label="Invia"
     type="submit"
   />
   <p-button
-    (onClick)="paziente.reset({nome: '', cognome: ''})"
+    (onClick)="paziente.reset()"
     label="Reset"
     severity="warn"
     variant="outlined"

@@ -1,9 +1,9 @@
-import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
-import {GestioneRisorse} from '../../core/Risorse/gestione-risorse';
-import {InputText} from 'primeng/inputtext';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {JsonPipe} from '@angular/common';
-import {Button} from 'primeng/button';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { GestioneRisorse } from '../../core/Risorse/gestione-risorse';
+import { InputText } from 'primeng/inputtext';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { JsonPipe } from '@angular/common';
+import { Button } from 'primeng/button';
 
 @Component({
   selector: 'his-accettazione-pz',
@@ -14,10 +14,26 @@ import {Button} from 'primeng/button';
 })
 export class AccettazionePz {
   gestioneRisorse = inject(GestioneRisorse);
+  // paziente = new FormGroup({
+  //   nome: new FormControl('', [Validators.required]),
+  //   cognome: new FormControl('', [Validators.required]),
+  // });
+  readonly #fb = inject(FormBuilder);
 
-  paziente = new FormGroup({
-    nome: new FormControl('', [Validators.required]),
-    cognome: new FormControl('', [Validators.required]),
+  paziente = this.#fb.group({
+    anagrafica: this.#fb.group({
+      nome: ['', [Validators.required]],
+      cognome: ['', [Validators.required]],
+      dataNascita: ['', [Validators.required]],
+      codiceFiscale: ['', [Validators.required]],
+      sesso: ['', [Validators.required]],
+    }),
+    sanitaria: this.#fb.group({
+      patologia: ['', [Validators.required]],
+      codiceColore: ['', [Validators.required]],
+      modArrivo: ['', [Validators.required]],
+      noteTriage: ['', Validators.required],
+    }),
   });
 
   checkFormControl(control: string) {
