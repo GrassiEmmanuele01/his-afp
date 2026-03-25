@@ -1,3 +1,262 @@
-<p>triage Colors:{{gestioneRisorse.triageColors()|json}}</p>
+<!-- <p>triage Colors:{{gestioneRisorse.triageColors()|json}}</p>
 <p>pathologies:{{gestioneRisorse.pathologies()|json}}</p>
-<p>Arrival mode:{{gestioneRisorse.arrivalModes()|json}}</p>
+<p>Arrival mode:{{gestioneRisorse.arrivalModes()|json}}</p> -->
+
+<form [formGroup]="paziente" (submit)="onSubmit()">
+    <fieldset formGroupName="anagrafica">
+        <legend>Dati Anagrafici:</legend>
+        <div class="flex flex-col p-4">
+            <label for="nome">Nome: </label>
+            <input 
+            class="w-2xs" 
+            pInputText 
+            id="nome" 
+            type="text" 
+            formControlName="nome"
+            [invalid]="checkFormControl('anagrafica.nome')">
+        
+            @if(checkFormControl('anagrafica.nome')){
+            @if (checkFormControlError('anagrafica.nome','required')){
+            <p-message severity="error" variant="simple">
+                Il campo 'nome' è obbligatorio
+            </p-message>
+            }
+            @if (checkFormControlError('anagrafica.nome','minlength')){
+            <p-message severity="error" variant="simple">
+                Il campo 'nome' deve contenere almeno {{
+                checkFormControlError('anagrafica.nome','minlength').requiredLength }}
+            </p-message>
+            }
+            @if (checkFormControlError('anagrafica.nome','maxlength')){
+            <p-message severity="error" variant="simple">
+                Il campo 'nome' non può superare i {{
+                checkFormControlError('anagrafica.nome','maxlength').requiredLength}} caratteri
+            </p-message>
+            }
+            }
+        </div>
+        <div class="flex flex-col p-4">
+            <label for="cognome">Cognome: </label>
+            <input class="w-2xs" pInputText id="cognome" type="text" formControlName="cognome"
+                [invalid]="checkFormControl('anagrafica.cognome')">
+        
+            @if(checkFormControl('anagrafica.cognome')){
+            @if (checkFormControlError('cognome','required')){
+            <p-message severity="error" variant="simple">
+                Il campo 'cognome' è obbligatorio
+            </p-message>
+            }
+            @if (checkFormControlError('anagrafica.cognome','minlength')){
+            <p-message severity="error" variant="simple">
+                Il campo 'cognome' deve contenere almeno {{
+                checkFormControlError('anagrafica.cognome','minlength').requiredLength }}
+                caratteri
+            </p-message>
+            }
+            @if (checkFormControlError('anagrafica.cognome','maxlength')){
+            <p-message severity="error" variant="simple">
+                Il campo 'cognome' non può superare i {{
+                checkFormControlError('anagrafica.cognome','maxlength').requiredLength}} caratteri
+            </p-message>
+            }}
+        </div>
+
+        <div class="flex flex-col p-4">
+            <label for="dataNascita">Data di Nascita: </label>
+            <!-- <p-input-mask
+                formControlName="dataNascita"
+                [invalid]="checkFormControl('anagrafica.dataNascita')"
+                class="w-2xs"
+                id="dataNascita"
+                pInputMask="99/99/9999"
+                dateFormat="dd/mm/yy"
+            /> -->
+
+            <p-datepicker 
+                formControlName="dataNascita"
+                [invalid]="checkFormControl('anagrafica.dataNascita')"
+                class="w-2xs"
+                id="dataNascita" 
+                dateFormat="dd/mm/yy" 
+                placeholder="dd/mm/yyyy" 
+                pInputMask="99/99/9999"
+                [maxDate]="maxDate" 
+            />
+
+            @if(checkFormControl('anagrafica.dataNascita')){
+            @if (checkFormControlError('dataNascita','required')){
+            <p-message severity="error" variant="simple">
+                Il campo 'Data di Nascita' è obbligatorio
+            </p-message>
+            }
+        }
+        </div>
+        
+        <div class="flex flex-col p-4">
+            <label for="codiceFiscale">Codice Fiscale: </label>
+            <input class="w-2xs" pInputText id="codiceFiscale" type="text" formControlName="codiceFiscale"
+                [invalid]="checkFormControl('anagrafica.codiceFiscale')">
+        
+            @if(checkFormControl('anagrafica.codiceFiscale')){
+            @if (checkFormControlError('codiceFiscale','required')){
+            <p-message severity="error" variant="simple">
+                Il campo 'Codice Fiscale' è obbligatorio
+            </p-message>
+            }
+            @if (checkFormControlError('anagrafica.codiceFiscale','pattern')){
+            <p-message severity="error" variant="simple">
+                Il campo 'Codice Fiscale' non rispetta la struttura corretta
+            </p-message>
+            }}
+        </div>
+
+        <div class="flex flex-col p-4">
+            <label for="sesso">Sesso: </label>
+            <p-select 
+                id="sesso"
+                [invalid]="checkFormControl('anagrafica.sesso')"
+                class="w-2xs"
+                formControlName="sesso"
+                [options]="sexOption"   
+                optionLabel="desc"
+                optionValue="code"        
+            />
+        
+            @if(checkFormControl('anagrafica.sesso')){
+            @if (checkFormControlError('sesso','required')){
+            <p-message severity="error" variant="simple">
+                Il campo 'sesso' è obbligatorio
+            </p-message>
+            }
+            }
+        </div>
+    </fieldset>
+
+    <fieldset 
+    formGroupName="sanitaria"
+    >
+        <div class="flex flex-col p-4">
+            <label for="patologia">Patologia: </label>
+            <p-select 
+            id="patologia" 
+            [invalid]="checkFormControl('sanitaria.patologia')" 
+            [filter]="true"
+            [filterFields]='["description","code"]'
+            class="w-2xs" 
+            formControlName="patologia"
+            [options]="gestioneRisorse.pathologies()" 
+            optionValue="code">
+                <ng-template #item let-pathology>
+                    {{pathology.code}} - {{pathology.description}}
+                </ng-template>
+                <ng-template #selectedItem let-pathology>
+                    {{pathology.code}} - {{pathology.description}}
+                </ng-template>
+            </p-select>        
+            @if (checkFormControlError('sanitaria.patologia','required')){
+            <p-message severity="error" variant="simple">
+                Il campo 'patologia' è obbligatorio
+            </p-message>
+            }
+        </div>
+        <div class="flex flex-col p-4">
+            <label for="modArrivo">Modalità di Arrivo: </label>
+            <p-select 
+                id="modArrivo" 
+                [invalid]="checkFormControl('sanitaria.modArrivo')" 
+                [filter]="true"
+                [filterFields]='["description","code"]' class="w-2xs" 
+                formControlName="modArrivo"
+                [options]="gestioneRisorse.arrivalModes()" 
+                optionValue="code"
+            >
+                <ng-template #item let-arrivalModes>
+                    {{arrivalModes.code}} - {{arrivalModes.description}}
+                </ng-template>
+                <ng-template #selectedItem let-arrivalModes>
+                    {{arrivalModes.code}} - {{arrivalModes.description}}
+                </ng-template>
+            </p-select>
+
+            @if (checkFormControlError('sanitaria.modArrivo','required')){
+            <p-message severity="error" variant="simple">
+                Il campo 'Modalità di arrivo' è obbligatorio
+            </p-message>
+            }
+        </div>
+        <div class="flex flex-col p-4">
+            <label for="codiceColore">codiceColore: </label>
+            <p-select 
+                id="codiceColore" 
+                [invalid]="checkFormControl('sanitaria.codiceColore')"  
+                class="w-2xs" 
+                formControlName="codiceColore"
+                [options]="gestioneRisorse.triageColors()" 
+                optionValue="code"
+            >
+                <ng-template #item let-color>
+                    <div class="flex flex-row item-center gap-2">
+                        <span
+                            class="inline-block size-5 h-5 rounded-md"
+                            [style.background-color]="color.hexValue"
+                        ></span>
+                        {{color.displayName}}   
+                    </div>
+                </ng-template>
+                <ng-template #selectedItem let-color>
+                    <div class="flex flex-row item-center gap-2">
+                        <span class="inline-block size-5 h-5 rounded-md" [style.background-color]="color.hexValue"></span>
+                        {{color.displayName}}
+                    </div>
+                </ng-template>
+            </p-select>
+
+            @if (checkFormControlError('sanitaria.modArrivo','required')){
+            <p-message severity="error" variant="simple">
+                Il campo 'codiceColore' è obbligatorio
+            </p-message>
+            }
+        </div>
+    </fieldset>
+    <p-button 
+    type="submit"
+    label="Invia"
+    />
+    <p-button 
+    (onClick)="paziente.reset"
+    label="Reset"
+    severity="warn"
+    variant="outlined"
+    />
+</form>
+
+<p>Valore paziente: {{paziente.value|json}}</p>
+
+<p>Error:{{paziente.errors|json}}</p>
+
+<p>Modifica: </p>
+    @if (paziente.dirty){
+        <span class="text-green-500">Modificato</span>
+    }@else{
+        <span class="text-red-500">Non modificato</span>
+    }
+<p>Toccata: </p>
+    @if (paziente.touched){<span class="text-green-500">Toccato</span>
+    }@else{
+    <span class="text-red-500">Non toccato</span>
+    }
+<p>Valida: </p>
+    @if (paziente.valid){<span class="text-green-500">Valida</span>
+    }@else{
+    <span class="text-red-500">Non valida</span>
+    }
+<p>Form Valida:</p>
+@if (paziente.invalid && (paziente.touched || paziente.dirty)){<span class="text-green-500">Valida</span>
+}@else{
+<span class="text-red-500">Non valida</span>
+}
+<p>Pending: </p>
+    @if (paziente.pending){<span class="text-green-500">Pending</span>
+    }@else{
+        <span class="text-red-500">Non pending</span>
+    }
