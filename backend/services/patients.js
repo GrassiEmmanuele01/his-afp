@@ -104,9 +104,11 @@ export const retrieveAdmissionByIDFn = catchAsync(async (req, res, next) => {
  */
 export const insertNewAdmissionFn = catchAsync(async (req, res) => {
 	const {
-		nome, cognome, dataNascita, sex, codiceFiscale, // Dati Paziente
-		patologiaCode, codiceColore, modalitaArrivoCode, noteTriage // Dati Accesso (Notare i suffix 'Code')
-	} = req.body;
+		nome, cognome, dataNascita, sesso, codiceFiscale, // Dati Paziente
+	} = req.body.anagrafica;
+	const {
+		patologia, codiceColore, modArrivo, noteTriage // Dati Accesso (Notare i suffix 'Code')
+	} = req.body.sanitaria;
 
 	const client = await pool.connect();
 
@@ -119,7 +121,7 @@ export const insertNewAdmissionFn = catchAsync(async (req, res) => {
          ON CONFLICT (codice_fiscale) DO UPDATE SET nome    = EXCLUDED.nome,
                                                     cognome = EXCLUDED.cognome
          RETURNING id`,
-		[nome, cognome, dataNascita, sex, codiceFiscale]
+		[nome, cognome, dataNascita, sesso, codiceFiscale]
 	);
 	const patientId = patientRes.rows[0].id;
 
@@ -140,7 +142,7 @@ export const insertNewAdmissionFn = catchAsync(async (req, res) => {
 	`;
 
 	const insertAdm = await client.query(insertQuery, [
-		patientId, braccialetto, patologiaCode, codiceColore, modalitaArrivoCode, noteTriage
+		patientId, braccialetto, patologia, codiceColore, modArrivo, noteTriage
 	]);
 
 	await client.query('COMMIT');

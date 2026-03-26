@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Button } from 'primeng/button';
 import { RouterLink} from '@angular/router';
 import { DarkmodeSelector } from '../darkmode-selector/darkmode-selector.component';
-import { DividerModule } from 'primeng/divider';
-import { environment } from '../../../environments/environment.development';
+import { Divider } from 'primeng/divider';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'his-header',
@@ -15,5 +15,4 @@ import { environment } from '../../../environments/environment.development';
 export class Header {
   reparto = environment.reparto;
   struttura = environment.struttura;
-
 }

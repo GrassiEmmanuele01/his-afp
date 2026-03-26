@@ -1,43 +1,47 @@
 <header
-    class="flex flex-row items-center shadow-md backdrop-opacity-5"
->    
-    <!-- LOGO --> 
-    <div
-        class="flex items-center justify-center p-1"
-    >
-        <img  class="w-40" src="logo-asuit.svg" alt="logoASUIT">
-    </div>
-    <!-- AZIENDA: Località+reparto -->
-    <div
-        class="pl-1"
-    >
-        <h1 class="text-4xl font-bold text-primary">{{reparto}}</h1>
-        <p class="text-md text-gray-800 .dark:text-gray-200">{{struttura}}</p>
-    </div>
-    <!-- DIVIDER -->
-    <p-divider layout="vertical" />
-    <div class="border-1 h-10 mx-1"></div>
-    <!-- AZIONI -->
-    <nav class="flex flex-row items-center gap-3 pl-4">
-        <p-button 
-        label="Lista PZ" 
-        [variant]="'outlined'"
-        routerLink="/lista-pz" 
-        />
-        <p-button 
-        label="Accettazione PZ" 
-        [variant]="'outlined'"
-        routerLink="/accettazione-pz" 
-        />
-        <p-button 
-        label="Stato servizi" 
-        [variant]="'outlined'"
-        routerLink="/stato-servizi" 
-        />
-    </nav>
-    <div
-        class="ml-auto mr-4"
-    >
-        <his-darckmode-selector/>
-    </div>
+  class="flex flex-row items-center shadow-md backdrop-opacity-5"
+>
+  <!-- LOGO -->
+  <div
+    class="flex items-center justify-center p-1"
+  >
+    <img alt="logoASUIT" class="w-40" src="logo-asuit.svg">
+  </div>
+  <!-- AZIENDA: Località + Reparto -->
+  <div
+    class="pl-1"
+  >
+    <h1 class="text-4xl font-bold text-primary">{{ reparto }}</h1>
+    <p class="text-md text-primary">{{ struttura }}</p>
+  </div>
+
+  <!--  DIVIDER-->
+  <p-divider layout="vertical"/>
+  <!--  <div class="border-amber-600 border-2 h-15 mx-1"></div>-->
+  <!-- AZIONI -->
+  <nav
+    class="flex flex-row items-center gap-3 pl-4"
+  >
+    <p-button
+      label="Lista PZ"
+      routerLink="/lista-pz"
+      variant="outlined"
+    />
+    <p-button
+      label="Accettazione PZ"
+      routerLink="/accettazione-pz"
+      variant="outlined"
+    />
+    <p-button
+      label="Stato Servizi"
+      routerLink="/stato-servizi"
+      variant="outlined"
+    />
+  </nav>
+
+  <div
+    class="ml-auto mr-4"
+  >
+    <his-darckmode-selector/>
+  </div>
 </header>
