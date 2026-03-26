@@ -1,17 +1,19 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { GestioneRisorse } from '../../core/Risorse/gestione-risorse';
 import { InputText } from "primeng/inputtext";
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder,ReactiveFormsModule, Validators } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 import { Button } from "primeng/button";
 import { MessageModule } from 'primeng/message';
 import { DatePickerModule } from 'primeng/datepicker';
 import { InputMaskModule } from 'primeng/inputmask';
 import { SelectModule } from 'primeng/select';
+import { TextareaModule } from 'primeng/textarea';
+import { FieldsetModule } from 'primeng/fieldset';
 
 @Component({
   selector: 'his-accettazione-pz',
-  imports: [JsonPipe, InputText, ReactiveFormsModule, Button, MessageModule, DatePickerModule, InputMaskModule, SelectModule],
+  imports: [JsonPipe, InputText, ReactiveFormsModule, Button, MessageModule, DatePickerModule, InputMaskModule, SelectModule, TextareaModule,FieldsetModule],
   templateUrl: './accettazione-pz.html',
   styleUrl: './accettazione-pz.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -24,16 +26,6 @@ import { SelectModule } from 'primeng/select';
 })
 export class AccettazionePz {
   gestioneRisorse = inject(GestioneRisorse);
-
-  // paziente = new FormGroup({
-  //   nome: new FormControl('', [
-  //     Validators.required,
-  //     Validators.minLength(2),
-  //     Validators.maxLength(30),]),
-  //   cognome: new FormControl('', [Validators.required]),
-  //   // residenza: new FormControl({
-  //   //   via: new FormControl(''),
-  //   //   civico: new FormControl(''), Form innestate
 
   // });
   readonly maxDate = new Date();
@@ -67,14 +59,9 @@ export class AccettazionePz {
       patologia: ['', [Validators.required]],
       codiceColore: ['', [Validators.required]],
       modArrivo: ['', [Validators.required]],
-      noteTriage: ['', [Validators.required]],
+      noteTriage: ['', [Validators.required, Validators.maxLength(500)]],
     })
   })
-  // nome = new FormControl('', [
-  //   Validators.required,
-  //   Validators.minLength(2),
-  //   Validators.maxLength(30),
-  // ]);
 
   checkFormControl(control: string) { 
     const fc = this.paziente.get(control);
@@ -82,7 +69,6 @@ export class AccettazionePz {
   }
   checkFormControlError(control: string, err: string) {
     const fc = this.paziente.get(control);
-    // return fc?.hasError(err) ?? false;
 
     if (fc && fc.hasError(err)) { 
       return fc?.getError(err);
