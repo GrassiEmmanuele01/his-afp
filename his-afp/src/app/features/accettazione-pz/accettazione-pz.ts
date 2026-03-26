@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { GestioneRisorse } from '../../core/Risorse/gestione-risorse';
-import { InputText } from "primeng/inputtext";
+import {InputTextModule } from "primeng/inputtext";
 import { FormBuilder,ReactiveFormsModule, Validators } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 import { Button } from "primeng/button";
@@ -10,24 +10,20 @@ import { InputMaskModule } from 'primeng/inputmask';
 import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
 import { FieldsetModule } from 'primeng/fieldset';
+import { PatientManager } from '../../core/Pazienti/patient-manager';
+import { PatientAdmission } from '../../core/Pazienti/Pazienti.model';
 
 @Component({
   selector: 'his-accettazione-pz',
-  imports: [JsonPipe, InputText, ReactiveFormsModule, Button, MessageModule, DatePickerModule, InputMaskModule, SelectModule, TextareaModule,FieldsetModule],
+  imports: [JsonPipe, InputTextModule, ReactiveFormsModule, Button, MessageModule, DatePickerModule, InputMaskModule, SelectModule, TextareaModule,FieldsetModule],
   templateUrl: './accettazione-pz.html',
   styleUrl: './accettazione-pz.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-        <div class="card flex justify-center">
-            <p-datepicker [(ngModel)]="date" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" pInputMask="99/99/9999" />
-        </div>
-    `,
-    standalone: true,
 })
 export class AccettazionePz {
   gestioneRisorse = inject(GestioneRisorse);
+  patientManager = inject(PatientManager);
 
-  // });
   readonly maxDate = new Date();
   readonly sexOption = [
     {
@@ -71,17 +67,19 @@ export class AccettazionePz {
     const fc = this.paziente.get(control);
 
     if (fc && fc.hasError(err)) { 
-      return fc?.getError(err);
-    } else {
-      return null;
+      return fc.getError(err);
     }
   }
 
   onSubmit() {
     if (this.paziente.valid) {
       console.log(this.paziente.value)
+      this.patientManager.admitPatient(this.paziente.value as PatientAdmission);
     } else { 
-      this.paziente.markAllAsTouched;
+      this.paziente.markAllAsTouched();
     }
   }
+
+
+  
 }
