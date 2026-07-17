@@ -12,9 +12,20 @@
         @for (operatore of staffManager.listaStaff(); track operatore.id) {
           <tr>
             <td class="p-2">{{ operatore.username }}</td>
-            <td class="p-2">{{ operatore.role }}</td>
             <td class="p-2">
-              <p-toggle-switch [ngModel]="operatore.isActive" />
+              <p-select
+                (onChange)="onRoleChange(operatore, $event.value)"
+                [options]="roleOptions"
+                [ngModel]="operatore.role"
+                optionLabel="desc"
+                optionValue="code"
+              />
+            </td>
+            <td class="p-2">
+              <p-toggle-switch
+                (onChange)="onToggleActive(operatore)"
+                [ngModel]="operatore.isActive"
+              />
             </td>
           </tr>
         } @empty {
