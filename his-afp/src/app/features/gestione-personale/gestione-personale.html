@@ -1,4 +1,93 @@
 <div class="flex flex-col gap-8 p-4">
+  <p-fieldset legend="Nuovo operatore">
+    <form (submit)="onSubmit()" [formGroup]="nuovoOperatoreForm" class="flex flex-row flex-wrap gap-8 items-start">
+      <div class="flex flex-col p-4">
+        <label for="username">Nome utente:</label>
+        <input
+          [invalid]="checkFormControl('username')"
+          class="w-2xs"
+          formControlName="username"
+          id="username"
+          pInputText
+          type="text"
+        />
+        @if (nuovoOperatoreForm.get('username')?.pending) {
+          <p-message severity="info" variant="simple">Verifica disponibilità in corso...</p-message>
+        }
+        @if (checkFormControl('username')) {
+          @if (checkFormControlError('username', 'required')) {
+            <p-message severity="error" variant="simple">
+              Il campo 'nome utente' è obbligatorio.
+            </p-message>
+          }
+          @if (checkFormControlError('username', 'minlength')) {
+            <p-message severity="error" variant="simple">
+              Il nome utente deve contenere almeno
+              {{ checkFormControlError('username', 'minlength').requiredLength }} caratteri.
+            </p-message>
+          }
+          @if (checkFormControlError('username', 'usernameNonDisponibile')) {
+            <p-message severity="error" variant="simple">
+              Questo nome utente è già in uso.
+            </p-message>
+          }
+        }
+      </div>
+
+      <div class="flex flex-col p-4">
+        <label for="password">Password:</label>
+        <p-password
+          [feedback]="false"
+          [invalid]="checkFormControl('password')"
+          [toggleMask]="true"
+          formControlName="password"
+          id="password"
+        />
+        @if (checkFormControl('password')) {
+          @if (checkFormControlError('password', 'required')) {
+            <p-message severity="error" variant="simple">
+              Il campo 'password' è obbligatorio.
+            </p-message>
+          }
+          @if (checkFormControlError('password', 'minlength')) {
+            <p-message severity="error" variant="simple">
+              La password deve contenere almeno
+              {{ checkFormControlError('password', 'minlength').requiredLength }} caratteri.
+            </p-message>
+          }
+        }
+      </div>
+
+      <div class="flex flex-col p-4">
+        <label for="role">Ruolo:</label>
+        <p-select
+          [invalid]="checkFormControl('role')"
+          [options]="roleOptions"
+          formControlName="role"
+          id="role"
+          optionLabel="desc"
+          optionValue="code"
+          placeholder="Seleziona un ruolo"
+        />
+        @if (checkFormControl('role')) {
+          @if (checkFormControlError('role', 'required')) {
+            <p-message severity="error" variant="simple">
+              Il campo 'ruolo' è obbligatorio.
+            </p-message>
+          }
+        }
+      </div>
+
+      <div class="flex flex-col p-4 justify-end">
+        <p-button
+          [disabled]="nuovoOperatoreForm.pending"
+          label="Crea operatore"
+          type="submit"
+        />
+      </div>
+    </form>
+  </p-fieldset>
+
   <p-fieldset legend="Staff in forza">
     <table class="w-full">
       <thead>
