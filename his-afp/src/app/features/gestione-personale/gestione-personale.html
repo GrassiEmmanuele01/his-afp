@@ -1,0 +1,28 @@
+<div class="flex flex-col gap-8 p-4">
+  <p-fieldset legend="Staff in forza">
+    <table class="w-full">
+      <thead>
+        <tr>
+          <th class="text-left p-2">Nome utente</th>
+          <th class="text-left p-2">Ruolo</th>
+          <th class="text-left p-2">Attivo</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (operatore of staffManager.listaStaff(); track operatore.id) {
+          <tr>
+            <td class="p-2">{{ operatore.username }}</td>
+            <td class="p-2">{{ operatore.role }}</td>
+            <td class="p-2">
+              <p-toggle-switch [ngModel]="operatore.isActive" />
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td class="p-2" colspan="3">Nessun operatore presente.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </p-fieldset>
+</div>
