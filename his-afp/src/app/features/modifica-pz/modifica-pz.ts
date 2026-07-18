@@ -36,7 +36,7 @@ export class ModificaPz {
   gestioneRisorse = inject(GestioneRisorse);
   patientManager = inject(PatientManager);
   patientReq = httpResource<APIResponse<PazienteDTO>>(
-    () => `http://localhost:3000/admissions/${this.patientId()}`,
+    () => `/api/admissions/${this.patientId()}`,
   );
   readonly maxDate = new Date();
   readonly sexOption = [
@@ -59,7 +59,6 @@ export class ModificaPz {
       codiceFiscale: [
         '',
         [Validators.required, Validators.pattern('[A-Z]{6}\\d{2}[A-Z]\\d{2}[A-Z]\\d{3}[A-Z]')],
-        // {pattern: {requiredPattern: '^[a-zA-Z ]*$', actualValue: '1'}}
       ],
       sesso: ['', [Validators.required]],
     }),
@@ -118,7 +117,6 @@ export class ModificaPz {
 
   checkFormControl(control: string) {
     const fc = this.paziente.get(control);
-    // nome.invalid && (nome.touched || nome.dirty)
     return fc?.invalid && (fc.touched || fc.dirty);
   }
 
