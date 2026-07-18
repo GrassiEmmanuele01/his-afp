@@ -3,7 +3,7 @@ import {AppError, catchAsync} from "../utils/errorHandler.js";
 import bcrypt from 'bcryptjs';
 
 export const retrieveAllStaffFn = catchAsync(async (req, res) => {
-	const query = `SELECT id, username, role, is_active as "isActive"
+	const query = `SELECT id, username, role, is_active as "isActive", note
                    FROM users
                    ORDER BY username ASC`;
 	const result = await pool.query(query);
@@ -20,12 +20,12 @@ export const checkUsernameAvailabilityFn = catchAsync(async (req, res) => {
 });
 
 export const createUserFn = catchAsync(async (req, res, next) => {
-	const {username, password, role} = req.body;
+	const {username, password, role, note} = req.body;
 	const hashedPassword = await bcrypt.hash(password, 12);
-	const query = `INSERT INTO users (username, password, role)
-                   VALUES ($1, $2, $3)
-                   RETURNING id, username, role`;
-	const result = await pool.query(query, [username, hashedPassword, role]);
+	const query = `INSERT INTO users (username, password, role, note)
+                   VALUES ($1, $2, $3, $4)
+                   RETURNING id, username, role, note`;
+	const result = await pool.query(query, [username, hashedPassword, role, note || null]);
 	res.status(201).json({status: 'success', data: result.rows[0]});
 });
 
