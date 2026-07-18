@@ -117,6 +117,7 @@ Allinterno della cartella `docs/` sono presenti documenti dettagliati riguardant
 - Documentazione delle API: [docs/API.md](docs/API.md)
 - Struttura del Database: [docs/DATABASE.md](docs/DATABASE.md)
 - Migrazione architetturale UF14 (isolamento di rete): [docs/migrazione-architetturale.md](docs/migrazione-architetturale.md)
+- Blue/Green deployment del backend (UF14 Task 2): [docs/blue-green-backend.md](docs/blue-green-backend.md)
 
 # Contribuire
 

@@ -5,6 +5,7 @@ export const retrieveHealthStatusFn = catchAsync(async (req, res) => {
 	const healthStatus = {
 		service: 'UP',
 		database: 'UNKNOWN',
+		version: process.env.INSTANCE_VERSION || 'n/d',
 		uptime: process.uptime()
 	};
 
