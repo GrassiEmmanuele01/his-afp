@@ -1,0 +1,2 @@
+ALTER TABLE sio.users
+    ADD COLUMN IF NOT EXISTS note TEXT NULL;
