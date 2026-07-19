@@ -60,6 +60,7 @@ export const retrieveAdmissionByIDFn = catchAsync(async (req, res, next) => {
 	const {id} = req.params;
 	const query = `
         SELECT a.id,
+               p.id                  AS "patientId",
                a.braccialetto,
                a.data_ora_ingresso   AS "dataOraIngresso",
                a.stato,
@@ -88,7 +89,7 @@ export const retrieveAdmissionByIDFn = catchAsync(async (req, res, next) => {
                  LEFT JOIN arrival_modes am ON a.modalita_arrivo_code = am.code
         WHERE a.id = $1
 	`;
-
+	
 	const result = await pool.query(query, [id]);
 	if (result.rows.length === 0) {
 		return next(new AppError("Accesso non trovato con questo ID", 404));
