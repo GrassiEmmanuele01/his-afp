@@ -3,6 +3,7 @@ import { CardModule } from 'primeng/card';
 import { Button } from 'primeng/button';
 import { Paziente } from '../../core/Pazienti/Pazienti.model';
 import { Router } from '@angular/router';
+import { PatientManager } from '../../core/Pazienti/patient-manager';
 
 @Component({
   selector: 'his-card-pz',
@@ -14,9 +15,14 @@ export class CardPz {
   paziente = input.required<Paziente>();
   borderTop = input.required<boolean>();
   readonly #router = inject(Router);
+  readonly #patientManager = inject(PatientManager);
 
   public navigateToSchedaPaziente() {
     this.#router.navigate([`/modifica-pz/${this.paziente().id}`]);
+  }
+
+  public dimettiPaziente() {
+    this.#patientManager.dischargePatient(this.paziente().id);
   }
 
   setBorder() {

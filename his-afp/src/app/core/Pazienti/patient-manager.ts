@@ -1,16 +1,16 @@
 import { inject, Injectable, signal } from '@angular/core';
 import {
+  AdmissionStatusUpdateRes,
   PatientAdmission,
   PatientAdmissionRes,
   Paziente,
   PazienteDTO,
+  PatientSearchByAnagrafica,
+  PatientSearchByCF,
+  PatientSearchResult,
 } from './Pazienti.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-type PatientSearchByCF = { cf: string; };
-type PatientSearchByAnagrafica = { nome: string; cognome: string; data_nascita: string; };
-type PatientSearchResult = any;
 import { map } from 'rxjs/operators';
 import { APIResponse } from '../models/APIResponse.model';
 import { Router } from '@angular/router';
@@ -72,10 +72,7 @@ export class PatientManager {
     });
   }
 
-  /**
-   * Ricerca pazienti già esistenti in anagrafica, per Codice Fiscale
-   * (esatto) oppure per Nome + Cognome + Data di Nascita.
-   */
+
   public searchPatients(
     criteria: PatientSearchByCF | PatientSearchByAnagrafica,
   ): Observable<PatientSearchResult[]> {
@@ -92,6 +89,21 @@ export class PatientManager {
     return this.#http
       .get<APIResponse<PatientSearchResult[]>>('/api/patients/search', { params })
       .pipe(map((res) => res.data));
+  }
+
+  public dischargePatient(admissionId: string) {
+    this.#http
+      .patch<APIResponse<AdmissionStatusUpdateRes>>(`/api/admissions/${admissionId}/status`, {
+        nuovoStato: 'DIM',
+      })
+      .subscribe({
+        next: () => {
+          this.fetchPazienti();
+        },
+        error: (err) => {
+          console.error('Errore durante la dimissione del paziente:', err);
+        },
+      });
   }
 
   public mapPazienteDTOToPaziente(pz: PazienteDTO): Paziente {

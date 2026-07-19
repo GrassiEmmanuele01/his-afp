@@ -61,3 +61,33 @@ export interface PatientAdmissionRes {
   id: number;
   braccialetto: string;
 }
+
+export interface PatientSearchResult {
+  id: number;
+  codice_fiscale: string;
+  nome: string;
+  cognome: string;
+  data_nascita: string;
+  sex: string;
+  indirizzo_via: string | null;
+  indirizzo_civico: string | null;
+  comune: string | null;
+  provincia: string | null;
+  created_at: string;
+}
+
+export interface PatientSearchByCF {
+  cf: string;
+}
+
+export interface PatientSearchByAnagrafica {
+  nome: string;
+  cognome: string;
+  data_nascita: string;
+}
+
+export interface AdmissionStatusUpdateRes {
+  id: number;
+  stato: string;
+  dataOraDimissione?: string;
+}
