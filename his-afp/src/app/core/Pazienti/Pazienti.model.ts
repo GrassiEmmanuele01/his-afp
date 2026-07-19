@@ -85,3 +85,9 @@ export interface PatientSearchByAnagrafica {
   cognome: string;
   data_nascita: string;
 }
+
+export interface AdmissionStatusUpdateRes {
+  id: number;
+  stato: string;
+  dataOraDimissione?: string;
+}

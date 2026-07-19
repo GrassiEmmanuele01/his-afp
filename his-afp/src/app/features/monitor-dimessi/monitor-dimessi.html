@@ -1,0 +1,37 @@
+<div class="p-4">
+  <p-fieldset legend="Pazienti dimessi nelle ultime 24 ore">
+    @if (dimessiReq.isLoading()) {
+      <p>Caricamento...</p>
+    } @else if (dimessiReq.error()) {
+      <p>Errore durante il caricamento dei dati.</p>
+    } @else {
+      <table class="w-full">
+        <thead>
+          <tr>
+            <th class="p-2 text-left">Braccialetto</th>
+            <th class="p-2 text-left">Paziente</th>
+            <th class="p-2 text-left">Ingresso</th>
+            <th (click)="toggleOrdinamento()" class="p-2 text-left cursor-pointer select-none">
+              Dimissione
+              {{ sortDirection() === 'asc' ? '▲' : '▼' }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (paziente of dimessiOrdinati(); track paziente.braccialetto) {
+            <tr>
+              <td class="p-2">{{ paziente.braccialetto }}</td>
+              <td class="p-2">{{ paziente.cognome }} {{ paziente.nome }}</td>
+              <td class="p-2">{{ paziente.dataOraIngresso | date: 'dd/MM/yyyy HH:mm' }}</td>
+              <td class="p-2">{{ paziente.dataOraDimissione | date: 'dd/MM/yyyy HH:mm' }}</td>
+            </tr>
+          } @empty {
+            <tr>
+              <td class="p-2" colspan="4">Nessun paziente dimesso nelle ultime 24 ore.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </p-fieldset>
+</div>

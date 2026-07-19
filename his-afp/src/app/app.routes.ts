@@ -10,12 +10,7 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/accettazione-pz/accettazione-pz').then((m) => m.AccettazionePz),
   },
-  // {
-  //   path: 'modifica-pz',
-  //   loadComponent: () => import('./features/modifica-pz/modifica-pz').then((m) => m.ModificaPz),
-  // },
   {
-    // /modifica-pz?id=2
     path: 'modifica-pz/:patientId',
     loadComponent: () => import('./features/modifica-pz/modifica-pz').then((m) => m.ModificaPz),
   },
@@ -31,6 +26,12 @@ export const routes: Routes = [
       (m) => m.GestionePersonale,
     ),
   },
+  {
+  path: 'monitor-dimessi',
+    loadComponent: () =>
+      import('./features/monitor-dimessi/monitor-dimessi').then((m) => m.MonitorDimessi),
+  },
+
   {
     path: '',
     redirectTo: 'lista-pz',
