@@ -1,8 +1,18 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { PatientAdmission, PatientAdmissionRes, Paziente, PazienteDTO } from './Pazienti.model';
-import { HttpClient } from '@angular/common/http';
+import {
+  PatientAdmission,
+  PatientAdmissionRes,
+  Paziente,
+  PazienteDTO,
+} from './Pazienti.model';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+type PatientSearchByCF = { cf: string; };
+type PatientSearchByAnagrafica = { nome: string; cognome: string; data_nascita: string; };
+type PatientSearchResult = any;
+import { map } from 'rxjs/operators';
 import { APIResponse } from '../models/APIResponse.model';
-import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -16,13 +26,6 @@ export class PatientManager {
   #listaPZFiltered = signal<Paziente[]>(this.#listaPZ());
   listaPZ = this.#listaPZFiltered.asReadonly();
 
-  // constructor() {
-  //   this.fetchPazienti();
-  // }
-
-  /**
-   * Creazione timer di t secondi
-   */
   public refreshPazienti() {
     if (this.timer_id() >= 0) return;
     let id = setInterval(() => this.fetchPazienti(), 1000);
@@ -47,29 +50,48 @@ export class PatientManager {
   }
 
   public admitPatient(pz: PatientAdmission) {
-    this.#http
-      .post<APIResponse<PatientAdmissionRes>>(`${environment.apiUrl}/admissions`, pz)
-      .subscribe({
-        next: (res) => {
-          this.#router.navigate([`/modifica-pz/${res.data.id}`]);
-        },
-        error: (err) => {
-          console.error("Errore durante l'ammissione del paziente:", err);
-        },
-      });
+    this.#http.post<APIResponse<PatientAdmissionRes>>(`/api/admissions`, pz).subscribe({
+      next: (res) => {
+        this.#router.navigate([`/modifica-pz/${res.data.id}`]);
+      },
+      error: (err) => {
+        console.error("Errore durante l'ammissione del paziente:", err);
+      },
+    });
   }
 
   public updatePatientInfo(pzId: number, residenza: Pick<PatientAdmission, 'residenza'>) {
-    this.#http
-      .patch<APIResponse<PatientAdmissionRes>>(`${environment.apiUrl}/patients/${pzId}`, residenza)
-      .subscribe({
-        next: (res) => {
-          this.#router.navigate([`/lista-pz`]);
-        },
-        error: (err) => {
-          console.error("Errore durante l'aggiornamento delle informazioni del paziente:", err);
-        },
-      });
+    this.#http.patch<APIResponse<PatientAdmissionRes>>(`/api/patients/${pzId}`, residenza).subscribe({
+      next: () => {
+        this.fetchPazienti();
+        this.#router.navigate([`/lista-pz`]);
+      },
+      error: (err) => {
+        console.error("Errore durante l'aggiornamento delle informazioni del paziente:", err);
+      },
+    });
+  }
+
+  /**
+   * Ricerca pazienti già esistenti in anagrafica, per Codice Fiscale
+   * (esatto) oppure per Nome + Cognome + Data di Nascita.
+   */
+  public searchPatients(
+    criteria: PatientSearchByCF | PatientSearchByAnagrafica,
+  ): Observable<PatientSearchResult[]> {
+    let params = new HttpParams();
+    if ('cf' in criteria) {
+      params = params.set('cf', criteria.cf);
+    } else {
+      params = params
+        .set('nome', criteria.nome)
+        .set('cognome', criteria.cognome)
+        .set('data_nascita', criteria.data_nascita);
+    }
+
+    return this.#http
+      .get<APIResponse<PatientSearchResult[]>>('/api/patients/search', { params })
+      .pipe(map((res) => res.data));
   }
 
   public mapPazienteDTOToPaziente(pz: PazienteDTO): Paziente {
