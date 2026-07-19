@@ -1,0 +1,129 @@
+<p-fieldset legend="Ricerca paziente">
+  <div class="flex flex-col gap-4 p-4">
+    <p-selectButton
+      (onChange)="cambiaModalita($event.value)"
+      [options]="modalitaOptions"
+      [ngModel]="modalita()"
+      optionLabel="label"
+      optionValue="value"
+    />
+
+    @if (modalita() === 'cf') {
+      <form (submit)="cerca()" [formGroup]="cfForm" class="flex flex-row flex-wrap items-start gap-4">
+        <div class="flex flex-col">
+          <label for="codiceFiscale">Codice Fiscale:</label>
+          <input
+            [invalid]="checkFormControl(cfForm.controls.codiceFiscale)"
+            class="w-2xs"
+            formControlName="codiceFiscale"
+            id="codiceFiscale"
+            pInputText
+            type="text"
+          />
+          @if (checkFormControl(cfForm.controls.codiceFiscale)) {
+            @if (checkFormControlError(cfForm.controls.codiceFiscale, 'required')) {
+              <p-message severity="error" variant="simple">
+                Il campo 'Codice Fiscale' è obbligatorio.
+              </p-message>
+            }
+            @if (checkFormControlError(cfForm.controls.codiceFiscale, 'pattern')) {
+              <p-message severity="error" variant="simple">
+                Il campo 'Codice Fiscale' non rispetta la struttura corretta.
+              </p-message>
+            }
+          }
+        </div>
+        <p-button label="Cerca" type="submit" />
+      </form>
+    } @else {
+      <form
+        (submit)="cerca()"
+        [formGroup]="anagraficaForm"
+        class="flex flex-row flex-wrap items-start gap-4"
+      >
+        <div class="flex flex-col">
+          <label for="nome">Nome:</label>
+          <input
+            [invalid]="checkFormControl(anagraficaForm.controls.nome)"
+            class="w-2xs"
+            formControlName="nome"
+            id="nome"
+            pInputText
+            type="text"
+          />
+          @if (checkFormControl(anagraficaForm.controls.nome)) {
+            @if (checkFormControlError(anagraficaForm.controls.nome, 'required')) {
+              <p-message severity="error" variant="simple">
+                Il campo 'nome' è obbligatorio.
+              </p-message>
+            }
+          }
+        </div>
+        <div class="flex flex-col">
+          <label for="cognome">Cognome:</label>
+          <input
+            [invalid]="checkFormControl(anagraficaForm.controls.cognome)"
+            class="w-2xs"
+            formControlName="cognome"
+            id="cognome"
+            pInputText
+            type="text"
+          />
+          @if (checkFormControl(anagraficaForm.controls.cognome)) {
+            @if (checkFormControlError(anagraficaForm.controls.cognome, 'required')) {
+              <p-message severity="error" variant="simple">
+                Il campo 'cognome' è obbligatorio.
+              </p-message>
+            }
+          }
+        </div>
+        <div class="flex flex-col">
+          <label for="dataNascita">Data di nascita:</label>
+          <p-datePicker
+            [invalid]="checkFormControl(anagraficaForm.controls.dataNascita)"
+            [maxDate]="maxDate"
+            class="w-2xs"
+            dateFormat="dd/mm/yy"
+            formControlName="dataNascita"
+            id="dataNascita"
+            placeholder="dd/mm/yyyy"
+          />
+          @if (checkFormControl(anagraficaForm.controls.dataNascita)) {
+            @if (checkFormControlError(anagraficaForm.controls.dataNascita, 'required')) {
+              <p-message severity="error" variant="simple">
+                Il campo 'Data di nascita' è obbligatorio.
+              </p-message>
+            }
+          }
+        </div>
+        <p-button label="Cerca" type="submit" />
+      </form>
+    }
+
+    @if (ricercaEffettuata()) {
+      @if (risultati().length > 0) {
+        <div class="flex flex-col gap-2">
+          @for (paziente of risultati(); track paziente.id) {
+            <div class="flex flex-row items-center justify-between gap-4 rounded-md border p-3">
+              <span>
+                {{ paziente.cognome }} {{ paziente.nome }} — {{ paziente.codice_fiscale }} —
+                nato/a il {{ paziente.data_nascita }}
+              </span>
+              <p-button (onClick)="selezionaPaziente(paziente)" label="Seleziona" size="small" />
+            </div>
+          }
+        </div>
+      } @else {
+        <p-message severity="warn" variant="simple">
+          Nessun paziente trovato con questi criteri.
+        </p-message>
+      }
+      <p-button
+        (onClick)="onNuovoPaziente()"
+        label="Nuovo Paziente"
+        severity="secondary"
+        variant="outlined"
+      />
+    }
+  </div>
+</p-fieldset>

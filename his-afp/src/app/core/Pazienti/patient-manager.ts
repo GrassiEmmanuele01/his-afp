@@ -4,13 +4,12 @@ import {
   PatientAdmissionRes,
   Paziente,
   PazienteDTO,
+  PatientSearchByAnagrafica,
+  PatientSearchByCF,
+  PatientSearchResult,
 } from './Pazienti.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-type PatientSearchByCF = { cf: string; };
-type PatientSearchByAnagrafica = { nome: string; cognome: string; data_nascita: string; };
-type PatientSearchResult = any;
 import { map } from 'rxjs/operators';
 import { APIResponse } from '../models/APIResponse.model';
 import { Router } from '@angular/router';
