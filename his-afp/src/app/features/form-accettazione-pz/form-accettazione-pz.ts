@@ -8,9 +8,13 @@ import { DatePicker } from 'primeng/datepicker';
 import { SelectModule } from 'primeng/select';
 import { Textarea } from 'primeng/textarea';
 import { Fieldset } from 'primeng/fieldset';
-import { formatDate } from '@angular/common';
 import { PatientManager } from '../../core/Pazienti/patient-manager';
 import { PatientAdmission, PatientSearchResult } from '../../core/Pazienti/Pazienti.model';
+
+interface LengthValidationError {
+  requiredLength: number;
+  actualLength: number;
+}
 
 @Component({
   selector: 'his-form-accettazione-pz',
@@ -32,23 +36,12 @@ export class FormAccettazionePz {
   gestioneRisorse = inject(GestioneRisorse);
   patientManager = inject(PatientManager);
 
-  /**
-   * Paziente selezionato dal componente di ricerca (o null se si sta
-   * creando una scheda nuova). Quando cambia, il form si pre-compila
-   * con i dati anagrafici storici.
-   */
   pazienteSelezionato = input<PatientSearchResult | null>(null);
 
   readonly maxDate = new Date();
   readonly sexOption = [
-    {
-      code: 'M',
-      desc: 'Maschio',
-    },
-    {
-      code: 'F',
-      desc: 'Femmina',
-    },
+    { code: 'M', desc: 'Maschio' },
+    { code: 'F', desc: 'Femmina' },
   ];
 
   readonly #fb = inject(FormBuilder);
@@ -79,7 +72,7 @@ export class FormAccettazionePz {
           this.paziente.get('anagrafica')?.patchValue({
             nome: pz.nome,
             cognome: pz.cognome,
-            dataNascita: formatDate(pz.data_nascita, 'dd/MM/yyyy', 'en'),
+            dataNascita: pz.data_nascita,
             codiceFiscale: pz.codice_fiscale,
             sesso: pz.sex,
           });
@@ -92,15 +85,25 @@ export class FormAccettazionePz {
     const fc = this.paziente.get(control);
     return fc?.invalid && (fc.touched || fc.dirty);
   }
-  checkFormControlError(control: string, err: string) {
-    const fc = this.paziente.get(control);
 
+  checkFormControlError(control: string, err: string): unknown {
+    const fc = this.paziente.get(control);
     if (fc && fc.hasError(err)) {
       return fc.getError(err);
     } else {
       return null;
     }
   }
+
+  getRequiredLength(control: string, err: string): number | null {
+    const fc = this.paziente.get(control);
+    if (fc && fc.hasError(err)) {
+      const error = fc.getError(err) as LengthValidationError;
+      return error.requiredLength;
+    }
+    return null;
+  }
+
   onSubmit() {
     if (this.paziente.valid) {
       console.log(this.paziente.value);

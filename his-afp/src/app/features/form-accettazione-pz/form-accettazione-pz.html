@@ -20,13 +20,13 @@
           @if (checkFormControlError('anagrafica.nome', 'minlength')) {
             <p-message severity="error" variant="simple">
               Il campo 'nome' deve contenere almeno
-              {{ checkFormControlError('anagrafica.nome', 'minlength').requiredLength }} caratteri.
+              {{ getRequiredLength('anagrafica.nome', 'minlength') }} caratteri.
             </p-message>
           }
           @if (checkFormControlError('anagrafica.nome', 'maxlength')) {
             <p-message severity="error" variant="simple">
               Il campo 'nome' non può superare i
-              {{ checkFormControlError('anagrafica.nome', 'maxlength').requiredLength }} caratteri.
+              {{ getRequiredLength('anagrafica.nome', 'maxlength') }} caratteri.
             </p-message>
           }
         }
@@ -50,13 +50,13 @@
           @if (checkFormControlError('anagrafica.cognome', 'minlength')) {
             <p-message severity="error" variant="simple">
               Il campo 'cognome' deve contenere almeno
-              {{ checkFormControlError('anagrafica.cognome', 'minlength').requiredLength }} caratteri.
+              {{ getRequiredLength('anagrafica.cognome', 'minlength') }} caratteri.
             </p-message>
           }
           @if (checkFormControlError('anagrafica.cognome', 'maxlength')) {
             <p-message severity="error" variant="simple">
               Il campo 'cognome' non può superare i
-              {{ checkFormControlError('anagrafica.cognome', 'maxlength').requiredLength }} caratteri.
+              {{ getRequiredLength('anagrafica.cognome', 'maxlength') }} caratteri.
             </p-message>
           }
         }
@@ -237,7 +237,7 @@
           @if (checkFormControlError('sanitaria.noteTriage', 'maxlength')) {
             <p-message severity="error" variant="simple">
               Il campo 'Note triage' può contenere al massimo
-              {{ checkFormControlError('sanitaria.noteTriage', 'maxlength').requiredLength }} caratteri.
+              {{ getRequiredLength('sanitaria.noteTriage', 'maxlength') }} caratteri.
             </p-message>
           }
         }
@@ -245,10 +245,7 @@
     </p-fieldset>
   </div>
   <div class="flex flex-row gap-4 pt-3">
-    <p-button
-      label="Invia"
-      type="submit"
-    />
+    <p-button label="Invia" type="submit" />
     <p-button
       (onClick)="paziente.reset()"
       label="Reset"
