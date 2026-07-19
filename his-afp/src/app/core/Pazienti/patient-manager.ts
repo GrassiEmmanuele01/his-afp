@@ -61,7 +61,8 @@ export class PatientManager {
 
   public updatePatientInfo(pzId: number, residenza: Pick<PatientAdmission, 'residenza'>) {
     this.#http.patch<APIResponse<PatientAdmissionRes>>(`/api/patients/${pzId}`, residenza).subscribe({
-      next: (res) => {
+      next: () => {
+        this.fetchPazienti();
         this.#router.navigate([`/lista-pz`]);
       },
       error: (err) => {
