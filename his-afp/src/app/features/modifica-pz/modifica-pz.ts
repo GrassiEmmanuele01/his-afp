@@ -133,8 +133,9 @@ export class ModificaPz {
   onSubmit() {
     if (this.paziente.valid) {
       console.log(this.paziente.value);
+      const patientId = this.patientReq.value()?.data.patientId ?? -1;
       this.patientManager.updatePatientInfo(
-        Number(this.patientId()) || -1,
+        patientId,
         this.paziente.value.residenza as Pick<PatientAdmission, 'residenza'>,
       );
     } else {
